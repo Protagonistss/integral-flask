@@ -10,6 +10,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import UniqueConstraint
 from dataclasses import dataclass
 
+from producer import publish
+
 app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:root@db/main'
@@ -52,6 +54,7 @@ def like(id):
         productUser = ProductUser(user_id=json['id'], product_id=id)
         db.session.add(productUser)
         db.session.commit()
+        publish('product_liked', id)
     except:
         abort(400, 'You already liked this product')
     return jsonify({
