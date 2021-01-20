@@ -1,6 +1,9 @@
 version: '3.7'
 services:
   backend:
+    container_name: integral_flask
+    environment:
+      AMQPURL: $AMQP_URL
     build:
       context: .
       dockerfile: Dockerfile
